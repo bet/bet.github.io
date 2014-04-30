@@ -32,7 +32,7 @@ CNBC                                                         Englewood Cliffs, N
   I built an IDS sensor, did post-incident forensic analysis, and
   created our password policy. I built and deployed a tool for forensic
   session logging, as a companion to the IDS sensor. I designed our
-  configuration collecton and tracking system.
+  configuration collection and tracking system.
 
 Goldman Sachs                                                New York, NY
 2008-2010
