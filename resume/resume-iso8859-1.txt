@@ -27,7 +27,7 @@ I've written an overview of cryptography,
 Experience
 ----------
 CNBC                                                         Englewood Cliffs, NJ
-2013-present
+2013-2014
 
   I built an IDS sensor, did post-incident forensic analysis, and
   created our password policy. I built and deployed a tool for forensic
