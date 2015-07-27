@@ -1,0 +1,32 @@
+<h2>Object Oriented can be useful</h2>
+
+<h1>preamble</h1>
+
+<p>I&#39;m not going to describe anything new, or advanced; rather, I&#39;m going to share a few experiences that helped give me an appreciation of Object Oriented design and programming. </p>
+
+<h1>abstract</h1>
+
+<p>A precautionary tale from the dark days of the dotcom boom, when the design aesthetic &quot;Ooh, Shiny!&quot; paid better than the stodgy &quot;useful&quot;. While Object Oriented design and programming has been woefully overhyped, and not always well done, it can help to manage and partially confine complexity. It only tries to confine code complexity, and ignores state complexity, so other models, like functional programming, become attractive for managing concurrency, but O-O still can leave you glad, rather than annoyed.</p>
+
+<h1>O-O design overview and examples</h1>
+
+<p>The notion of modular design is sound, and sometimes attaching structures containing state to code that uses it, fits the problem well, for graphical user interface toolkits, and possibly for some other domains. Sun&#39;s vintage 1985 Sunview had a great O-O API, in C. The objects were conceptually simple and well-named, as were the methods for manipulating them; you could quickly and easily learn to write the half-dozen lines of code and comments to do something simple, and the code complexity scaled up gracefully as you added functionality. Some roughly contemporary attempts at O-O GUI libraries, like the &quot;intrinsics-based&quot; Motif toolkit, did not work out so well.</p>
+
+<h1>My experience</h1>
+
+<p>I read Damian Conway&#39;s Object Oriented Perl when it came out, and immediately started using IO::File on the current project, which was gruesome, reading trivial tables out of MySQL, and writing tens of thousands of CSV files to be compiled into the varying strings of the pages of a Macromedia Flash website. </p>
+
+<p>This ended up being thousands of lines of perl, expressing the information design of the website, writing hundreds of different kinds of CSV files. </p>
+
+<p>After the site was first shown to work, someone decided that it must be able to reflect a change in the data within minutes -- even though the thousands of invocations of the Adobe compiler took a half hour to run. </p>
+
+<p>No problem, just use make(1) to only invoke the compiler if its inputs have changed. Recomputing and rewriting the thousands of CSV files took seconds, as did rerunning the Adobe compiler a few times. </p>
+
+<p>But the thousands of lines of perl had hundreds of stanzas of code, each a little different, each opening and writing its own variety of CSV files. </p>
+
+<p>So I wrote what I dubbed IO::Clever. Under the hood, it saved the calling parameters into a structure, and returned an IO::Stringy. When the surrounding code called close, my module opened the existing file (if any) and read it, compared the contents to what had been written, and only wrote the file if the contents had been changed, hence preserving timestamps to inform make(1). </p>
+
+<p>The closest to a clever bit I can see from this distance is, the object returned was a file handle, an IO::Stringy, that the calling code could use directly; and the helper information of the original filename was stashed in a table indexed by the handle, so it could be retrieved by the close() routine to perform the open/read/compare/write-if-necessary cycle. If I&#39;d had more faith in the machinery of O-O, that cleverness wouldn&#39;t have been needed. I&#39;d have created a subclass, with the extra field to preserve the filename. </p>
+
+<p>But, I neither completely trusted the O-O inheritance machinery, nor had an appetite to study the implementation. As it all worked perfectly the first time I tried it, and I got to make edits proportional to the desired effect, rather than growing with the number of repetitive stanzas, I left with a happy feeling about O-O. </p>
+</body></html>
