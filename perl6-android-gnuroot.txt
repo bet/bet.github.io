@@ -2,3 +2,5 @@ TLDR: LDFLAGS=-Wl,-z,noexecstack And then zef install --force Readline
 Moarvm wants to try to execute code off the stack, but doesn't have to. Android blocks attempts to execute code on the stack with selinux, as part of its app sandboxing. Gnuroot debian, from Google Play, is an Android app that doesn't need a rooted phone, and presents a quite useable debian linux environment.
 The build needs a 2GB Android device (takes a half hour on my Nexus 5), but after it's built I can copy it to older 1GB Androids like a Galaxy Nexus and it works fine. Panda wants a lot of dependencies, and if any of them see anything wrong, it gives up. Zef has a --force option to install anyway.
 I git clone rakudo, configure and build and install, then build and install zef. Rakudo-star wants panda, and rakudobrew leaves the resulting runnable perl6 interlaced with git trees, harder to copy to other devices.
+Note that the Readline perl6 module is just a binding to an installed
+libreadline; I installed libreadline6-dev for that.
