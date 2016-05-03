@@ -1,0 +1,24 @@
+#!/usr/bin/env perl6
+use v6;
+use fatal;
+sub rpn (Str $line, @stack) returns Array {
+	for $line.words {
+#say 'Debug ' ~ @stack.perl ~ $_;
+		when $_ ~~ /\d/ { @stack.push( +($_)); };
+		my $top = @stack.pop() if @stack;
+		my $next = @stack.pop() if @stack;
+		when '+' { @stack.push($next + $top) };
+		when '-' { @stack.push($next - $top) };
+		when '*' { @stack.push($next * $top) };
+		when '/' { @stack.push($next / $top) };
+	}
+	return @stack;
+}
+
+sub MAIN {
+	my @s = ();
+	while get() -> $l {
+		@s = rpn $l, @s;
+		print @s ~ ' ' if @s;
+	}
+}
