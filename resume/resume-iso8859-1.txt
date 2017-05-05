@@ -27,7 +27,7 @@ I've written an overview of cryptography,
 
 Experience
 ----------
-TD Securities                                              New York, NY
+TD Securities                                            New York, NY
 2016-present
 
   I helped in adding DMARC, DKIM, and SPF records for email security. I helped
@@ -37,7 +37,7 @@ TD Securities                                              New York, NY
   evaluate Content Distribution Network (CDN) and Web Application firewall
   (WAF) vendors.
 
-CNBC                                                       Englewood Cliffs, NJ
+CNBC                                                     Englewood Cliffs, NJ
 2013-2014
 
   I built an IDS sensor, did post-incident forensic analysis, and
@@ -45,14 +45,14 @@ CNBC                                                       Englewood Cliffs, NJ
   session logging, as a companion to the IDS sensor. I designed our
   configuration collection and tracking system.
 
-Goldman Sachs                                              New York, NY
+Goldman Sachs                                            New York, NY
 2008-2010
 
   I helped automate system administration of Linux and Solaris
   servers, including automated periodic inventory of systems
   and batch system modification.
 
-Morgan Stanley                                             New York, NY
+Morgan Stanley                                           New York, NY
 2003-2008
 
   I was a Unix systems engineer at Morgan Stanley. I created and
@@ -62,7 +62,7 @@ Morgan Stanley                                             New York, NY
   and servers for a new, highly scalable internal build based on
   CERN's Quattor.
 
-Société Générale                                           New York, NY
+Société Générale                                         New York, NY
 2002-2003
 
   I was a security analyst at Société Générale, in their Information
@@ -72,7 +72,7 @@ Société Générale                                           New York, NY
   --- web utilization, NT and Unix login activity --- and web-based
   query/reporting tools for viewing the data.
 
-Morgan Stanley                                             New York, NY
+Morgan Stanley                                           New York, NY
 2001-2002   
 
   I was a security analyst at Morgan Stanley, in their Information
@@ -83,7 +83,7 @@ Morgan Stanley                                             New York, NY
   helping ensure that new deployments introduced no security
   problems.
 
-Oven Digital                                               New York, NY
+Oven Digital                                             New York, NY
 1999-2000
 
   I was the senior security and systems analyst at Oven Digital.
@@ -96,7 +96,7 @@ Oven Digital                                               New York, NY
   high-performance, high-security, high-availability web server
   farms.
 
-Lehman Brothers, Inc.                                      Jersey City, NJ
+Lehman Brothers, Inc.                                    Jersey City, NJ
 1998-1999
 
   I was a Senior Systems Administrator and Systems Analyst at Lehman
@@ -110,7 +110,7 @@ Lehman Brothers, Inc.                                      Jersey City, NJ
   generation queries through a web interface against the collected
   data. This was instrumental in planning and managing upgrades.
 
-Fuji Capital Markets Corp.                                 New York, NY
+Fuji Capital Markets Corp.                               New York, NY
 1995-1998
 
   I was a Senior Systems Analyst at Fuji Capital Markets.
@@ -123,7 +123,7 @@ Fuji Capital Markets Corp.                                 New York, NY
   automounter architecture we used for installing and accessing
   software.
 
-Salomon Brothers, Inc.                                     New York, NY
+Salomon Brothers, Inc.                                   New York, NY
 1991-1995
 
   I worked as a Senior Systems Analyst for SBI.
@@ -156,7 +156,7 @@ Salomon Brothers, Inc.                                     New York, NY
   SATAN, as well as security fixes like Sun's ypserv patch and new
   versions of sendmail.
 
-Radiology Department, Duke University Medical Center       Durham, NC
+Radiology Department, Duke University Medical Center     Durham, NC
 1988-1991
 
   My responsibilities included system administration, user
@@ -167,7 +167,7 @@ Radiology Department, Duke University Medical Center       Durham, NC
   programming. I performed security auditing, and improved the
   network's security substantially.
 
-Computation Center, Duke University                        Durham, NC
+Computation Center, Duke University                      Durham, NC
 1984-1988
 
   I supported System V UNIX on AT&T 3B5, IBM OS/MVS and VM on
