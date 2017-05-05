@@ -1,3 +1,5 @@
+default: resume.pdf
+
 resume-iso8859-1.txt: resume.txt
 	iconv -f UTF-8 -t ISO-8859-1 resume.txt -o resume-iso8859-1.txt
 

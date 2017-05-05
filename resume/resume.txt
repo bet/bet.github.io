@@ -27,7 +27,17 @@ I've written an overview of cryptography,
 
 Experience
 ----------
-CNBC                                                        Englewood Cliffs, NJ
+TD Securities                                                New York, NY
+2016-present
+
+  I helped in adding DMARC, DKIM, and SPF records for email security. I helped
+  document and simplify our administration procedures for our multi-factor
+  authentication servers, and enable their use, via RADIUS, for a password
+  archive; and created operations documentation for upgrading them. I helped
+  evaluate Content Distribution Network (CDN) and Web Application firewall
+  (WAF) vendors.
+
+CNBC                                                         Englewood Cliffs, NJ
 2013-2014
 
   I built an IDS sensor, did post-incident forensic analysis, and
@@ -86,7 +96,7 @@ Oven Digital                                                 New York, NY
   high-performance, high-security, high-availability web server
   farms.
 
-Lehman Brothers, Inc.                                     Jersey City, NJ
+Lehman Brothers, Inc.                                        Jersey City, NJ
 1998-1999
 
   I was a Senior Systems Administrator and Systems Analyst at Lehman
@@ -146,7 +156,7 @@ Salomon Brothers, Inc.                                       New York, NY
   SATAN, as well as security fixes like Sun's ypserv patch and new
   versions of sendmail.
 
-Radiology Department, Duke University Medical Center           Durham, NC
+Radiology Department, Duke University Medical Center         Durham, NC
 1988-1991
 
   My responsibilities included system administration, user
@@ -157,7 +167,7 @@ Radiology Department, Duke University Medical Center           Durham, NC
   programming. I performed security auditing, and improved the
   network's security substantially.
 
-Computation Center, Duke University                            Durham, NC
+Computation Center, Duke University                          Durham, NC
 1984-1988
 
   I supported System V UNIX on AT&T 3B5, IBM OS/MVS and VM on
@@ -169,7 +179,7 @@ Computation Center, Duke University                            Durham, NC
 Education
 ---------
 
-Department of Electrical Engineering, School of Engineering,   Durham, NC
+Department of Electrical Engineering, School of Engineering, Durham, NC
 1980-1984                                   Duke University
 
   I earned a Bachelor of Science in Electrical Engineering, Magna
