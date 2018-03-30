@@ -2,7 +2,7 @@
 %%Title: resume-iso8859-1.txt
 %%For: *
 %%Creator: a2ps version 4.14
-%%CreationDate: Thu Mar 29 16:53:41 2018
+%%CreationDate: Thu Mar 29 16:30:56 2018
 %%BoundingBox: 24 24 571 818
 %%DocumentData: Clean7Bit
 %%Orientation: Portrait
@@ -621,7 +621,7 @@ x0 y0 moveto
 (---------------------) N
 () N
 (I am expert in Perl and Bourne Shell. I know the C programming) N
-(language well. I've studied perl 6 and rust. I've designed and) N
+(language well. I've begun programming in perl 6. I've designed and) N
 (negotiated security policies, built and maintained firewalls and IDS) N
 (systems, and performed security administration. I support Red Hat) N
 (Linux regularly, and work occasionally with Solaris. My focus is) N
