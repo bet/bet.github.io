@@ -1,14 +1,14 @@
 %!PS-Adobe-3.0
 %%Title: resume-iso8859-1.txt
-%%For: *
+%%For: 
 %%Creator: a2ps version 4.14
-%%CreationDate: Thu Mar 29 16:53:41 2018
-%%BoundingBox: 24 24 571 818
+%%CreationDate: Sun Apr  1 16:59:01 2018
+%%BoundingBox: 24 24 588 768
 %%DocumentData: Clean7Bit
 %%Orientation: Portrait
 %%Pages: 3
 %%PageOrder: Ascend
-%%DocumentMedia: A4 595 842 0 () ()
+%%DocumentMedia: Letter 612 792 0 () ()
 %%DocumentNeededResources: font Courier
 %%+ font Courier-Bold
 %%+ font Courier-BoldOblique
@@ -117,7 +117,11 @@ a2psdict begin
 % Return the y size of the current font
 % - => fontsize
 /currentfontsize {
-  currentfont /FontMatrix get 3 get 1000 mul
+  currentfont /FontType get 0 eq {
+    currentfont /FontMatrix get 3 get
+  }{
+    currentfont /FontMatrix get 3 get 1000 mul
+  } ifelse
 } bind def
 
 % reencode the font
@@ -163,6 +167,144 @@ a2psdict begin
     currentdict
   end 
 } bind def
+
+% composite fonts for ASCII-EUC mixed strings
+% Version 1.2 1/31/1990
+% Original Ken'ichi HANDA (handa@etl.go.jp)
+% Modified Norio Katayama (katayama@rd.nacsis.ac.jp),1998
+% Extend & Fix Koji Nakamaru (maru@on.cs.keio.ac.jp), 1999
+% Anyone can freely copy, modify, distribute this program.
+
+/copyfont {	% font-dic extra-entry-count  copyfont  font-dic
+	1 index maxlength add dict begin
+	{	1 index /FID ne 2 index /UniqueID ne and
+		{def} {pop pop} ifelse
+	} forall
+	currentdict
+	end
+} bind def
+
+/compositefont { % ASCIIFontName EUCFontName RomanScale RomanOffset Rot(T/F) compositefont font
+    /RomanRotation exch def
+    /RomanOffset exch def
+    /RomanScale exch def
+    userdict /fixeucfont_dict known not {
+	userdict begin
+	    /fixeucfont_dict 2 dict begin
+		/UpperByteEncoding [
+		    16#00 1 16#20 { pop 0 } for
+		    16#21 1 16#28 { 16#20 sub } for
+		    16#29 1 16#2F { pop 0 } for
+		    16#30 1 16#74 { 16#27 sub } for
+		    16#75 1 16#FF { pop 0 } for
+		] def
+	        /LowerByteEncoding [
+		    16#00 1 16#A0 { pop /.notdef } for
+		    16#A1 1 16#FE { 16#80 sub 16 2 string cvrs
+				    (cXX) dup 1 4 -1 roll
+				    putinterval cvn } for
+		    /.notdef
+		] def
+		currentdict
+	    end def
+	end
+    } if
+    findfont dup /FontType get 0 eq {
+	14 dict begin
+	    %
+	    % 7+8 bit EUC font
+	    %
+	    12 dict begin
+		/EUCFont exch def
+		/FontInfo (7+8 bit EUC font) readonly def
+		/PaintType 0 def
+		/FontType 0 def
+		/FontMatrix matrix def
+		% /FontName
+		/Encoding fixeucfont_dict /UpperByteEncoding get def
+		/FMapType 2 def
+		EUCFont /WMode known
+		{ EUCFont /WMode get /WMode exch def }
+		{ /WMode 0 def } ifelse
+		/FDepVector [
+		    EUCFont /FDepVector get 0 get
+		    [ 16#21 1 16#28 {} for 16#30 1 16#74 {} for ]
+		    {
+			13 dict begin
+			    /EUCFont EUCFont def
+			    /UpperByte exch 16#80 add def	
+			    % /FontName
+			    /FontInfo (EUC lower byte font) readonly def
+			    /PaintType 0 def
+			    /FontType 3 def
+			    /FontMatrix matrix def
+			    /FontBBox {0 0 0 0} def
+			    /Encoding
+				fixeucfont_dict /LowerByteEncoding get def
+			    % /UniqueID
+			    % /WMode
+			    /BuildChar {
+				gsave
+				exch dup /EUCFont get setfont
+				/UpperByte get
+				2 string
+				dup 0 4 -1 roll put
+				dup 1 4 -1 roll put
+				dup stringwidth setcharwidth
+				0 0 moveto show
+				grestore
+			    } bind def
+			    currentdict
+			end
+			/lowerbytefont exch definefont
+		    } forall
+		] def
+		currentdict
+	    end
+	    /eucfont exch definefont
+	    exch
+	    findfont 1 copyfont dup begin
+		RomanRotation {
+			/FontMatrix FontMatrix
+			[ 0 RomanScale neg RomanScale 0 RomanOffset neg 0 ]
+			matrix concatmatrix def
+		}{
+			/FontMatrix FontMatrix
+			[ RomanScale 0 0 RomanScale 0 RomanOffset ] matrix concatmatrix
+			def
+			/CDevProc
+			    {pop pop pop pop 0 exch -1000 exch 2 div 880} def
+		} ifelse
+	    end
+	    /asciifont exch definefont
+	    exch
+	    /FDepVector [ 4 2 roll ] def
+	    /FontType 0 def
+	    /WMode 0 def
+	    /FMapType 4 def
+	    /FontMatrix matrix def
+	    /Encoding [0 1] def
+	    /FontBBox {0 0 0 0} def
+%	    /FontHeight 1.0 def % XXXX
+	    /FontHeight RomanScale 1.0 ge { RomanScale }{ 1.0 } ifelse def
+	    /Descent -0.3 def   % XXXX
+	    currentdict
+	end
+	/tmpfont exch definefont
+	pop
+	/tmpfont findfont
+    }{
+	pop findfont 0 copyfont
+    } ifelse
+} def	
+
+/slantfont {	% FontName slant-degree  slantfont  font'
+    exch findfont 1 copyfont begin
+    [ 1 0 4 -1 roll 1 0 0 ] FontMatrix exch matrix concatmatrix
+    /FontMatrix exch def
+    currentdict
+    end
+} def
 
 % Function print line number (<string> # -)
 /# {
@@ -539,17 +681,17 @@ a2psdict begin
 ] def
 %%EndResource
 % Initialize page description variables.
-/sh 842 def
-/sw 595 def
+/sh 792 def
+/sw 612 def
 /llx 24 def
-/urx 571 def
-/ury 818 def
+/urx 588 def
+/ury 768 def
 /lly 24 def
 /#copies 1 def
 /th 0.000000 def
 /fnfs 11 def
-/bfs 11.199836 def
-/cw 6.719901 def
+/bfs 11.547912 def
+/cw 6.928747 def
 
 % Dictionary for ISO-8859-1 support
 /iso1dict 8 dict begin
@@ -574,7 +716,7 @@ currentdict end def
    cw 81.400000 mul
 def
 /ph
-   791.828389 th add
+   735.601972 th add
 def
 /pmw 0 def
 /pmh 0 def
@@ -609,7 +751,7 @@ iso1dict begin
 gsave
 llx lly 0 add translate
 /v 0 store
-/x0 x v get 4.703931 add sx cw mul add store
+/x0 x v get 4.850123 add sx cw mul add store
 /y0 y v get bfs  sub store
 x0 y0 moveto
 (                        Bennett E. Todd III) p n
@@ -675,13 +817,6 @@ x0 y0 moveto
 (  internal DNS infrastructure. I designed the DNS architecture) N
 (  and servers for a new, highly scalable internal build based on) N
 (  CERN's Quattor.) N
-() N
-(Soci\351t\351 G\351n\351rale                                         New York, NY) N
-(2002-2003) N
-() N
-(  I was a security analyst at Soci\351t\351 G\351n\351rale, in their Information) N
-(  Security and Governance department. I designed and implemented) N
-(  their Perimeter Intrusion Detection System; I created several) N
 grestore
 end % of iso1dict
 pagesave restore
@@ -694,10 +829,17 @@ iso1dict begin
 gsave
 llx lly 0 add translate
 /v 0 store
-/x0 x v get 4.703931 add sx cw mul add store
+/x0 x v get 4.850123 add sx cw mul add store
 /y0 y v get bfs  sub store
 x0 y0 moveto
-(  utilization reporting systems, importing logs of various sorts) p n
+() p n
+(Soci\351t\351 G\351n\351rale                                         New York, NY) N
+(2002-2003) N
+() N
+(  I was a security analyst at Soci\351t\351 G\351n\351rale, in their Information) N
+(  Security and Governance department. I designed and implemented) N
+(  their Perimeter Intrusion Detection System; I created several) N
+(  utilization reporting systems, importing logs of various sorts) N
 (  --- web utilization, NT and Unix login activity --- and web-based) N
 (  query/reporting tools for viewing the data.) N
 () N
@@ -753,7 +895,22 @@ x0 y0 moveto
 (  software.) N
 () N
 (Salomon Brothers, Inc.                                   New York, NY) N
-(1991-1995) N
+grestore
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3) 3
+%%BeginPageSetup
+/pagesave save def
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 0 add translate
+/v 0 store
+/x0 x v get 4.850123 add sx cw mul add store
+/y0 y v get bfs  sub store
+x0 y0 moveto
+(1991-1995) p n
 () N
 (  I worked as a Senior Systems Analyst for SBI.) N
 () N
@@ -767,22 +924,7 @@ x0 y0 moveto
 (  failure\), and maintenance of several hundred workstations. I) N
 (  produced a software suite for automated network load of SunOS 4.x,) N
 (  much in the style of Jumpstart. The group I worked with provided) N
-grestore
-end % of iso1dict
-pagesave restore
-showpage
-%%Page: (3) 3
-%%BeginPageSetup
-/pagesave save def
-%%EndPageSetup
-iso1dict begin
-gsave
-llx lly 0 add translate
-/v 0 store
-/x0 x v get 4.703931 add sx cw mul add store
-/y0 y v get bfs  sub store
-x0 y0 moveto
-(  second-tier support for some seventy System Administrators, who) p n
+(  second-tier support for some seventy System Administrators, who) N
 (  were in turn responsible for machines serving roughly a thousand) N
 (  end-users, including traders, researchers, and application) N
 (  developers.) N
