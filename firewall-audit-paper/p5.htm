@@ -1,0 +1,154 @@
+<html><head>
+<meta name="keywords" content="News, ">
+<title>Papers: </title></head>
+<body background="parch.gif" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<CENTER><TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+<TR><TD>&nbsp;</TD><TD width=400>
+<h2>Auditing Firewalls: A Practical Guide
+</h2>
+<i>by <a href="todd.htm">Bennett Todd</a></i>
+<HR>
+
+<h3>Contents</h3>
+<ul><li><a href="#Abstract">Abstract</a></ul>
+<ol type=I><li><a href="#I">Introduction</a><br>
+<li><a href="#II">The Security Policy Audit</a><br>
+<ol type=A><li><a href="#II.A">Security Policy Overview</a><br>
+<li><a href="#II.B">Security Policy Details</a><br>
+<li><a href="#II.C">Security Policy Reconciliation</a><br>
+</ol>
+<li><a href="#III">Firewall Design Audit</a><br>
+<li><a href="#IV">Firewall Implementation Audit</a><br>
+<li><a href="#V">Choice Of Tools</a><br>
+<li><a href="#VI">Resources</a></ol><p>
+<br>
+
+
+
+
+
+<a name="Abstract"></a><h3>Abstract:</h3>
+
+
+Firewalls are computer security facilities used to control or restrict network connectivity; they are used to enforce a security policy, and are typically placed between networks with different security needs. Any time a control system is in place, it's important to audit it appropriately to confirm that it is meeting your needs.<p>
+
+In some fields, this is a very streamlined and formalized process, thanks to a mature and stable understanding of the field and what kinds of controls are needed. Computer firewalls don't as yet enjoy this luxury; we're still figuring out what they should do and how they should do it.<p>
+
+So the process of auditing a firewall ends up reproducing the process of initially specifying, designing, and configuring the firewall. And if any time has passed since the initial firewall deployment, a good audit is almost guaranteed to find important room for improvement.<p>
+
+Audits come in two varieties: internal and external. An internal audit is one intended to provide guidance to an organization's management. An external audit is provided for the benefit of individuals outside the organization, be they investors, regulators, or whatever. This discussion will be focused on the internal audit; so far regulatory organizations, under whose purview external financial audits are generally performed, have not taken up computer security.<p>
+<br>
+
+<a name="I"></a><h3>I. Introduction</h3>
+
+If you have a firewall system installed, then you worry about it. If you don't have a firewall system, then you had better install one, and start to worry about it.<p>
+
+But there is a way to temporarily alleviate the worries, and that's with a good audit. If you are really responsible, then you will start worrying again and want to schedule another audit, more or less immediately. Audits are needed more often when things change rapidly. Audits are needed less often when the currently-installed solution is exceptionally secure: this is one strong argument for over-specifying a firewall, if that's practical.<p>
+
+Since the field of computer security is evolving so rapidly, any firewall audit ends up being a re-design, re-specification, and finally a cross-check to make sure the current installation is properly configured.<p>
+
+So how do you approach a firewall audit? The same way you approach the original design. First, review the security policy, and confirm that it's a good match for the organization's needs. Then review the design of the firewall system, confirming that it's a suitable choice for enforcing the security policy. Next review the configuration of the firewall, confirming that it's set up appropriately. Finally devise suitable spot-tests to confirm that the firewall is behaving as documented.<p>
+
+At each step of the way, you have an enormous number of choices. So to do the very best job possible, you should start out with a known total budget, because many of the choices will inevitably be cost constrained.<p>
+
+
+<a name="II"></a><h3>II. The Security Policy Audit</h3>
+
+Auditing the security policy is the hardest part of the firewall audit - and the most rewarding. Policy design and specification is more of an art than a science. If time or money are very tight, you can skimp on this one; just read the current policy, and come up with a rough opinion of whether it seems reasonable, then spot-check a few places, interviewing customers of the policy, to confirm that it seems to have been properly researched, and really does fit the organization's needs (and is recognized to do so by customers). But to get the best out of a security policy audit, you should re-draft the policy from scratch, then reconcile the differences between the new draft and the current working policy. So let us review the procedure for designing a security policy from scratch.<p>
+
+One point must be settled at the very beginning, though. No matter what route you are taking, does your policy permit anything that's not explicitly prohibited, or does it prohibit everything that's not explicitly permitted? Each stance has its place. Most places will want the tighter 'prohibit everything that's not expressly permitted', but some few - e.g. Internet Service Providers - sell connectivity as their business, and so are better served with an external security stance permitting anything with specified exceptions. But remember, even a wide-open ISP will need some machines on which to run their own business, and those machines had better be protected by a more conventional default-closed policy.<p>
+
+
+<a name="II.A"></a><h3>II.A. Security Policy Overview</h3>
+
+Your security policy is the single most important part of your firewall setup, and indeed your overall security stance. A security policy is part of a risk management policy, since computer security is part of the risk -Vs- cost tradeoff. It's important to see the security policy tied to the rest of the risk policy. For example, if you aren't taking good backups and protecting them suitably, then there's little point in striving for the finest possible computer security; the resources you're trying to protect won't be there for long. A security policy designed as part of the overall organization risk management strategy gains authority, and without authority no security policy will carry. It's too easy for users to circumvent security controls; the computer security policy must have sufficient force of authority that they won't do so. Or at least, they won't do so twice.<p>
+
+Another important feature of a security policy is that it should be balanced and appropriate. While it's obvious that an overly-weak security policy will prevent a good implementation, it may not be so clear that an overly-strong policy also undermines implementation. When it comes time to erect barriers, for a given implementation cost, the stricter the barriers the more inconvenience they will inflict on the users. So when defending these inconveniences to users, you will need to be selling them in terms of the organization's needs. Don't try to install more security than appropriate, unless the excess causes no additional inconvenience.<p>
+
+In any setting, it's critical that the users consent to the security policy. Sometimes this can be done by middle-management, but it's far better to have every user sign a copy of the security policy at some point, even if the policy is later changed. Which brings us to the topic of policy revision; unless your users are wholly-owned chattel, you better have a documented protest procedure in place, so that users who feel the security policy doesn't properly reflect the organization's needs have a suitable channel for trying to get it changed.<p>
+
+
+<a name="II.B"></a><h3>II.B. Security Policy Details</h3>
+
+So, how do you get past such broad generalizations and down to the details of a good working computer security policy? Start by enumerating the organization's security needs. List resources that need to be protected, with some general indication of their value, and what kind of protection is critical.<p>
+
+Every organization has some information that must be concealed. Typically this includes human resources and payroll data. Sometimes it also includes proprietary information, whether it be details of financial trading positions and strategies, or current research work, or whatever. Data that must be concealed, that cannot be read by anyone without need to know, requires the tightest protection.<p>
+
+Then there's information that you cannot have modified by unauthorized persons; this will be much broader. Besides much of the rest of the data on your systems, it will also typically include systems software.<p>
+
+As you set about drafting the security policy it's somewhere around here that you will find the needs for security conflicting with the needs for access to resources. For example, people who work on machines with strong security needs may need access to email, or to web browsing. Hence they need to get at the Internet. But if you provide unrestricted access to the Internet, then you can forget security. It is possible to secure a general-purpose user desktop workstation tightly enough for it to withstand the attacks that traverse the Internet - but the cost of such security, in administrative complexity and in user inconvenience, is prohibitive.<p>
+
+So build up your list of security needs and resource access needs, and keep track of the conflicts. Many of these conflicts will end up being dealt with on your firewall.<p>
+
+The end result can be organized as a list of resources requiring protection, with what protection level each requires (and why), and a list of resources to which people need access, why they need it, and what restrictions should be imposed on the access (and why). In the process you will also have come up with categories of users having distinct access requirements and privileges. It's a good sign if these categories align with the boundaries of the internal organizational structure. Such alignment suggests that the boundaries really are properly drawn, and enables the organization to decompose responsibility for the policy; departmental managers can take a role in specifying the access policies that are applied to their departments.<p>
+
+
+<a name="II.C"></a><h3>II.C. Security Policy Reconciliation</h3>
+
+If you've decided to take the high road and re-design your security policy from scratch, then reconcile the results with the original, the reconciliation is a lot easier than the re-design. All you need to do is go down each policy; look at every resource that one says must be protected, and make sure the other agrees with both the need for protection and the degree of protection required. Look at each resource that one policy says must be accessible, and confirm that the other agrees.<p>
+
+Where the drafts disagree, you have learned something. So find out why they disagree. Was the original was too lax or too strict? If, on consideration, the new policy really seems a better fit for the organization's needs, then by all means revise the policy. Make a special note, too; any changes in the policy are likely to cascade on down the audit process, suggesting adjustments to the design or configuration of the firewall.<p>
+
+
+<a name="III"></a><h3>III. Firewall Design Audit</h3>
+
+Firewall designs are another area where there's lots of room for opinion, and where the field continues to evolve rapidly. Nearly any two firewall designers will disagree on some detail or another; this is not a well-established field at all. But many will agree on some generalities; e.g. for a given cost, there's a security -Vs- performance tradeoff; and cost is a complex of initial purchase costs (hardware and software), initial setup costs, and maintenance costs.<p>
+
+Another place where there is pretty good agreement among experts is in the nature of the building blocks. Very loosely, the current building blocks for firewall design are packet filters and proxies. Each of these is further subdivided; for example routers are the highest-performance packet filters currently available, while there are some higher-security packet filters that keep state tables documenting established connections, and so can have more refined controls than simple screening routers. And proxies are likewise divided; at one extreme there's a fantastically specialized subsystem like qmail, which is (among other things) a high-performance SMTP mail proxy; at the other extreme you find the application-independent &quot;generic&quot; proxy SOCKS; and somewhere in the middle you find application-specific and generic security proxies like those in the TIS fwtk.<p>
+
+A big point of debate in firewall design, as in other areas of computer system specification, is open-source -Vs- proprietary. This one often can't be settled on rational grounds; if people start off disagreeing on open source, they will probably continue disagreeing on it. Best to make sure you agree with the management who is responsible for the firewall before you enter into the auditing arrangement. My own opinion on the matter is simple: there may be fields where there aren't adequate open-source offerings, but computer security software in general and firewall implementation software in particular is not such a field. So I regard the primary attraction of proprietary solutions as having someone else to blame when it fails. As I don't design my solutions to fail, this ends up as a very simple stance. The open source -Vs- proprietary debate doesn't really have a terrific impact on firewall auditing until it comes to the implementation audit, section IV.<p>
+
+So how do you perform the firewall design audit? Here I tend to take a more relaxed approach than in the policy audit; while you can repeat the re-design and reconcile strategy, I believe it suffices in the design audit to simply check the existing design and confirm that it can do a satisfactory job of implementing the policy. If you find any gross misfits here, by all means document them, but unless the initial design was badly botched this should be pretty quiet, driven only by changes in the organization's needs (as reflected in the security policy) or changes in the environment - new tools, new threats.<p>
+
+
+<a name="IV"></a><h3>IV. Firewall Implementation Audit</h3>
+
+The implementation is the easiest part to audit, but the part most people leap to. You shouldn't find much here, barring trickling down changes that came from updates to the policy.<p>
+
+If you have an open source firewall you should examine its configuration, and audit the sources - at a minimum checking that the sources haven't been changed from the originals, or examining any changes closely. If you have a proprietary firewall then still attempt to audit the configuration. Examine the setup, see what is being permitted, checking against the policy - whether the policy is default-open or default-closed, the configuration should pretty closely mirror what it says. Another thing I like to do for any firewall that has an IP address (i.e. anything except a screening bridge) is examine it with an external port scanner. If your policy says it should, make sure the port scan triggers an alarm. Note any ports found open on the firewall and determine whether they're appropriate.<p>
+
+If the firewall is a packet filter, or performs any reverse-proxying functions, then also scan every machine behind it, and confirm that the firewall is applying the restrictions that it's supposed to. One thing I really like to do is place a sniffer inside the firewall being examined, to watch the protected net while I perform the scan.<p>
+
+And if any components of the firewall are running general-purpose operating systems, run netstat or the local equivalent to ask the operating system what network ports are open.<p>
+
+Also check to see if the firewall is running packet filtering code; a popular design bastion host is a hybrid, with a general-purpose OS running application proxies, with protection reinforced by packet filters.<p>
+
+As you are auditing the implementation, build a list of the components used, with precise versions for all software; then go and check available online resources looking for known security holes. Then go back and check to see if the firewall under scrutiny is susceptible to any of these holes.<p>
+
+And finish with some spot checks, attempts to bypass various controls. If the firewall is supposed to allow some protocols outbound-only, check from the outside and make sure they aren't really being allowed inbound. If it is supposed to filter any content, check by moving some prohibited content through it and make sure it gets properly edited.<p>
+
+
+<a name="V"></a><h3>V. Choice Of Tools</h3>
+
+Scanning tools of various sorts can aid your vision when examining the implementation of a firewall - but it's not good to let yourself be blinded by them. For instance, a simple port scanner is comforting reinforcement; it should repeat what you already know from checking the output of 'netstat' run on a bastion - although it won't be as accurate as 'netstat' for UDP, if it can scan UDP at all. Such a port scanner may be the only way to see what ports are open on a closed-architecture box, like, for example, many packet filters. In any case port scanners are a valuable tool. In more complex configurations you can use a port scanner, or better still a flexible packet generator, in combination with a network sniffer on the other side of the host, to learn details about how strange combinations of packets get handled.<p>
+
+As for higher-level security scanners, by all means feel free to run them - but don't expect to learn anything. Security scanning programs, the likes of SATAN, and Internet Scanner, are great for scanning your network of inside hosts; they'll catch silly, easy-to-fix problems that have snuck in here and there, and can automate checking large numbers of machines for such simple problems. But a firewall merits much closer examination, and a firewall bastion host should be so tightly secured that an automated scanner doesn't stand a chance of finding anything. Hence a scanner can tell you effectively 'yup, that looks like a firewall', but it shouldn't be able to find anything like a security problem - and the fact that it finds no problem doesn't mean you have a strong firewall. This is another consequence of the speed with which firewall design constraints change; if they'd only stand still for a few years, people could write effective automated scanners for them. Maybe some day they will.<p>
+
+
+<a name="VI"></a><h3>VI. Resources</h3>
+
+Firewall vendors are an important starting point. Reputable vendors will provide detailed reports of known security problems, with searchable archives. Likewise the reference documentation is important for interpreting the configuration information.<p>
+
+Online security information repositories like the BugTraq archives at www.geek-girl.com/bugtraq, and CERT at www.cert.org, are great for resources for researching holes, scanning tools, and so on.<p>
+
+RFC 2196 Site Security Handbook is a helpful starting point for drafting security policies.<p>
+
+&quot;Firewalls and Internet Security: Repelling the Wily Hacker&quot;, by Bill Cheswick and Steve Bellovin (Addison-Wesley 1994), is an excellent introduction to firewalls, explaining what they are trying to accomplish, and some of the basic ways they can do it.<p>
+
+&quot;Building Internet Firewalls&quot;, by Brent Chapman and Elizabeth Zwicky (O'Reilly &amp; Associates 1995), is a very helpful cookbook, with recipes for many standard firewall designs.<p>
+
+But, almost above all else, firewall auditing is impossible without the kind of feel for current events you can only get by participating in active mailing lists. I'd recommend Firewall-Wizards, Firewalls, and BugTraq for starters. Also the newsgroups comp.security.firewalls, comp.security.unix, and comp.security.misc.<p>
+
+
+<HR>
+&copy; Copyright Bennett Todd<br>
+email: <a href="mailto:bet@rahul.net">bet@rahul.net</a>
+
+
+
+
+</TD><TD>&nbsp;</TD></TR></TABLE></CENTER>
+<HR>
+<center><font size="2" color="#000066">
+<br>&copy; Copyright Townsend &amp; Taphouse, 1998. All rights reserved.</font></CENTER>
+</BODY></HTML>
