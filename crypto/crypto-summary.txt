@@ -1,0 +1,560 @@
+Cryptography: a Summary of the field for Engineers
+==================================================
+
+Bennett Todd <bet@rahul.net>
+
+1. Introduction
+===============
+
+Cryptography is a very old study, but since the advent of widespread
+use of computers in the last few decades, it has advanced at an
+enormous rate. Computers make trivial the cryptanalysis of all but one
+of the cryptographic algorithms that predate them (the One-time Pad).
+They also make practical the use of algorithms that are able to resist
+computer-assisted cryptanalysis effectively. However, inventing such
+algorithms is not a sport for amateurs; common sense can only be
+brought to bear on cryptography by people with the training to
+properly understand all the most advanced techniques known for
+computer-aided cryptanalysis.
+
+What this means is that when we as engineers wish to apply
+cryptography to creating secure systems, we must confine our usage to
+well-known, well-analyzed algorithms and protocols. Fortunately this
+is no hindrance. This paper undertakes to survey the field of
+cryptography as it is applied today. This will be, however, a fairly
+brief and superficial survey, intended to introduce the jargon and
+concepts, and to touch on a few of the most important algorithms and
+protocols. Thoroughly treating this subject would require a book, and
+happily, that book has been written: it is Applied Cryptography, by
+Bruce Schneier.
+
+2. Random bits
+==============
+
+Before studying cryptographic specifics, I need to settle the matter
+of random bits, as they are used so frequently that they must be
+clearly understood for any subsequent discussion. For cryptographic
+purposes, random bits must be genuinely and truly random: there must
+be no way that an attacker can guess or predict them. In practice this
+means that no pseudo-random number generator can be used for their
+creation; they must come from basic sources. The favourite of all
+basic sources is radioactive decay; by sampling the noise produced
+from radioactive decay --- or, perhaps, other quantum sources such as
+the thermal fry of a reverse-biased semiconductor junction --- bits
+can be produced which are believed to be truly random, provably
+unpredictable and unguessable for fundamental physical reasons. 
+However, the equipment to do this sort of thing is not widely
+available on common platforms, so practical systems end up using
+careful techniques to manage pools of randomness, feeding them with
+bits sampled from physical processes --- variations in rotational
+latency of hard disks, variations in timing of keyboard and mouse
+input events, etc. If your operating system does not provide you with
+a good source of random numbers as a builtin function (commonly
+/dev/random), you should pursue a source of random bits such as EGD,
+the Entropy-Gathering Daemon <URL:http://www.lothar.com/tech/crypto/>.
+
+3. Cryptographic Algorithms
+===========================
+
+Algorithms are the building blocks of cryptographic systems. They
+divide into several categories, each of which admits of a
+straightforward security analysis, and each of which is peopled by
+well-studied specimens, appropriate for use in deployed systems. In
+this section we survey the major categories of cryptographic
+algorithms, and so arm ourselves with the materials we need to study
+how they are put together into cryptographic protocols to be applied
+to practical problems.
+
+3.1. One-time Pad
+-----------------
+
+One-time pads are a singular category of cryptographic algorithm, as
+unlike any other they are provably secure, but only if properly used.
+And using them properly is so difficult that they are rarely practical
+for any real problem. A One-time pad is a variety of cypher: it
+translates plaintext into cyphertext using a key. It is a symmetric
+cypher, since the same key is used for encryption and decryption.
+
+A one-time pad requires a large bulk of truly random bits --- the
+amount of key material needed is identical to the amount of plaintext
+you wish to encrypt. One-time pads can be expressed in any number of
+ways, but one reasonable approach in computer implementation is to
+take the plaintext and key material a byte at a time, and produce
+cyphertext by xor-ing each byte of plaintext with the corresponding
+byte of cyphertext. If --- and _only_ if --- the random bits used are
+truly random, then this is a perfect cypher, theoretically impossible
+to break, since all possible plaintexts of the same length are equally
+probable decryptions, and there is no way to tell which is correct.
+
+But under no circumstances can any of the key material be generated
+using pseudo-random number generation algorithms, or re-used. That's
+the fatal problem with one-time pad; it requires so much key material
+that it is impractical for nearly all purposes.
+
+3.2. Symmetric Cyphers
+----------------------
+
+Symmetric cyphers use a simple fixed-length key to encrypt an
+arbitrary amount of plaintext onto the same amount of cyphertext. Many
+cryptographic protocols will compress the plaintext first, but that is
+not necessary to protect the security of a good cypher, and since
+since there are a nice assortment of well-analyzed symmetric cyphers
+available to choose from, and several more under development, the only
+good reason to compress plaintext before encyphering is that that is
+your only chance to do so; the output of a good cypher cannot be
+compressed.
+
+Good symmetric cyphers cannot be usefully attacked in any way other
+than brute force search of the key space; neither known-plaintext nor
+chosen-plaintext attacks make them more approachable. So the goals in
+picking a good symmetric cypher are simple: you want one that uses a
+large enough key; you want one that has been very well analyzed; and
+often you'd prefer one that ones quicker over one that runs slower.
+DES, the Digital Encryption Standard, is probably the best-analyzed
+symmetric cypher today, but it's not terribly fast in software, and it
+was crippled during its design to ensure that it only had a 56-bit
+key, which is not adequate for many purposes today. Triple-DES, with a
+112-bit key length, is adequately strong, and is believed to be no
+weaker than DES, so it may be the strongest cypher available. But it's
+terribly slow by comparison with the other reasonable candidates. IDEA
+uses a 128-bit key, which is plenty, but it is patented, so people try
+to avoid it in new designs. Blowfish is a nice fast cypher, and has a
+variable key length; 128-bit keyed blowfish as a fine choice for new
+work.
+
+There are plenty of other cyphers out there, many of which have a good
+amount of analysis backing them. A new batch is coming out now, as a
+result of the Advanced Encryption Standard (AES) effort, which is
+aiming to produce an officially standardized successor to DES.
+
+3.3. Assymetric Cyphers (Public Key)
+------------------------------------
+
+Assymetric cyphers are a relatively recent breed. They pull off an
+unexpected mathematical trick: they use two keys, one of which
+encrypts and the other of which decrypts. They are called Public Key
+systems because the encryption key can be published, and people can
+encrypt messages with it, and knowing only the public key it remains
+impractical to decypher the messages --- that can only be done using
+the secret key.
+
+The assymetric cyphers share some common features that influence their
+use in cryptographic protocols and systems designs. In particular,
+they are very, very slow compared to symmetric cyphers, and so are
+never used for encrypting bulk volumes of plaintext; instead, they are
+used to encrypt relatively short chunks of random bits for session
+keys, or cryptographic hashes of plaintext.
+
+The best-analyzed assymetric cypher is probably RSA, named for the
+initials of its inventors, Rivest, Shamir, and Adelman. It is based on
+the difficulty of factoring numbers that are the product of two large
+primes. As the difficulty of factoring is considerably less than the
+difficulty of brute-force searching through all possible bit-strings
+of a given length, RSA requires dramatically longer keys. While today
+nobody has factored a 1024-bit composite of two large primes, it's not
+beyond the bounds of reason that that might happen in the forseeable
+future; many advocate using 2048-bit RSA keys, and I've heard the
+argument made that under some reasonable-sounding assumptions that
+size may be roughly comparable in strength to 128-bit symmetric cypher
+keys. RSA was patented in the US; however, the patent (US Patent
+4,405,829), which expired on Sep. 20, 2000, was officially abandoned
+by RSA Data Security effective September 6, 2000
+<URL:http://www.rsasecurity.com/developers/total-solution/faq.html>,
+so RSA can now be used in all settings.
+
+The next most widely used public key cryptosystem is probably
+Diffie-Hellman, which is somewhat older, and its patent has expired.
+It is based on discrete logarithms. As far as I know, its key size
+scales more or less similarly to RSA. It enjoyed a brief spasm of
+popularity during the interval in which its patent had expired and
+RSA's patent had not. It's not clear whether its popularity will
+remain as strong after, although it will be carried forward by some
+protocols that grew during that interval, notably PGP as implemented
+in PGP Version 5 and GnuPG, as well as ssh protocol version 2 as
+implemented by ssh2, OpenSSH, and lsh.
+
+A varient on Diffie-Hellman uses the same problem, discrete
+logarithms, over elliptic curves. Some claim that this variation is so
+much more resistant to cryptanalysis that it makes it safe to use with
+much, much smaller keys, and so it is being considered for use in some
+embedded applications. Others argue that the mathematics of elliptic
+curves aren't adequately studied, and there is no grounds for
+confidence that with adequate study they won't be found to be as easy
+to crack as regular discrete logarithms --- which would make all the
+short keys suddenly far weaker.
+
+The great appeal to RSA is the massive amount of study that has gone
+into factoring composites of large primes; it has been so extensively
+studied that many are optimistic that they will never be found trivial
+to factor.  But until some assymetric cypher has its basic problem
+_proven_ to be intractible --- and such proofs have not appeared to
+date --- using any of them will be a gamble. But such a convenient
+one!
+
+3.4. Cryptographic Hashes
+-------------------------
+
+The final major category of cryptographic algorithms are the Hashes.
+There are a few of them, all of which share common features. They are
+fed a plaintext, and produce a hash, which is a fixed-size bit string.
+The string is sufficiently long to render the chance of an accidental
+collision safely neglible. 128 bits is adequate for many purposes, for
+much the same reasons as 128 bits are sufficient for symmetric
+cyphers, in both cases the only attack for a good algorithm is a brute
+force search, each trial of which has a chance of only one in two to
+the keylength. Two raised to the 128th power is plenty big for many
+settings. However, the Birthday Attack makes a case for larger hashes
+in some applications; many people like to go with 160 bits or more.
+The Birthday Attack is inspired by the entertaining observation that
+with 23 people in a room, the odds are better than even that two of
+them have the same birthday. In other words, in applications where all
+an attacker must do is construct a pair of distinct strings with the
+same hash, it may be worth considering longer hashes rather than
+shorter ones.
+
+An attack on a crypto hash consists of finding two messages that
+produce the same hash. Depending on the application one of the
+messages may be fixed, and the search might be to find the second. The
+pigeonhole principle guarantees that vast numbers of such pairs exist,
+but the long odds make them hard to find. A successful attack would
+consist of an algorithm that can find such a collision more easily
+than brute force, trying random texts until a match is found.
+
+Cryptographic hashes not only guarantee that collisions cannot be
+found, they also ensure that a hash reveals nothing about the
+plaintext used to generate it.
+
+One common feature of crypto hashes is that a single bit change in the
+input will on the average flip about half the bits in the output.
+
+For some years the most popular crypto hash was MD5, a Message Digest
+algorithm invented by Ron Rivest and published as RFC 1321. It's still
+not a bad choice, but some believe that there is room to worry thanks
+to research results, which have found ways to attack various
+"weakened" varients of MD5. While MD5 has so far not been successfully
+attacked, many analysts would feel more comfortable if weakened
+variations were stronger than they turn out to be, so some have turned
+to other cryptographic hashes. And besides, MD5 only produces 128
+bits. One of the more popular successors is SHA-1, specified by
+publication FIPS-180-1 by NIST. It produces a 160-bit output.
+
+4. Protocols
+============
+
+Cryptographic Protocols are the assembled specifications describing
+how a series of applications of various cryptographic algorithms,
+taken together with steps such as generating some random bits, and
+passing various messages, are used to achieve a specific end.
+
+Designing good cryptographic protocols is very nearly as fraught as
+designing sound crypto algorithms; except for the very simplest
+applications, it's wise to try to use an existing, well-studied
+protocol rather than inventing a new one.
+
+4.1. Simple Protocols
+---------------------
+
+The very simplest protocols are straightforward applications of
+algorithms, and can be trivially seen to deliver whatever benefits
+they claim, with any weaknesses made obvious by their simplicity. This
+can be a safe field for inventing new cryptographic protocols; I
+illustrate with one I invented a few years ago.
+
+4.1.1. Bulk Encryption with Public Key management
+-------------------------------------------------
+
+One of the more obvious combinations of algorithms is used whenever
+public key encryption is being applied for key management. As
+mentioned earlier, public key algorithms are prohibitively slow. So
+instead of running a public key encryption over an entire body of
+plaintext, standard practice is to generate a random key with a good
+source of random bits, use a nice fast symmetric cypher to encrypt the
+plaintext using that random key (called a session key), and then
+encrypt the session key with a public-key algorithm and append that to
+the message. The recipient can use the public key algorithm, with
+their secret key, to retrieve the session key, which they can then use
+to decrypt the message. This protocol combines the performance
+advantages of symmetric cyphers with the key management features of
+assymetric cyphers.
+
+4.1.2. Digital signatures
+-------------------------
+
+Public key systems can be used to digitally sign a file. The standard
+protocol for this job is to run a crypto hash over the file, then
+encrypt the resulting (comparatively small, fixed-size) hash with the
+secret key. As long as the secret key is kept properly confidential,
+nobody else would be able to produce the result: a bit string which
+when decrypted with the public key of the signer, matches the crypto
+checksum of the document.
+
+4.1.3. S/Key
+------------
+
+S/Key is an elegant and simple protocol for secure authentication. It
+allows a simple implementation of one-time passwords, so that a user
+can authenticate themselves over an insecure link, and an intruder
+intercepting the traffic cannot learn out to authenticate themselves
+for future connections. Since it requires no link encryption, it's
+interoperable with many standard network clients, e.g. unmodified
+telnet; but since there's no modification to the low-level protocol
+it's impossible for it to protect against active man-in-the-middle
+attacks.
+
+The S/Key protocol is delightful in its simplicity. In essence, the
+user chooses a passphrase, and in an offline setup step the server is
+equipped with the output of running that passphrase through a
+cryptographic checksum, like e.g. MD5, many times. In other words the
+user's passphrase is fed to MD5, and the 128-bit checksum output by
+that is then used as the input for another pass through MD5, and so
+on, for some agreed-on count, e.g. 100 times through. When you wish to
+authenticate, the server presents the count, e.g. 100, and the user
+replies with the result of running the original passphrase through MD5
+one fewer times, e.g. 99. The server can validate that the user really
+must know their passphrase by running one more MD5 and confirming that
+the result matches the saved value; if it does, then the 99-count
+checksum is saved, replacing the previous 100-count checksum, and so
+the next challenge will be 99. Thus the initial count determines how
+many logins are possible before the system must be re-initialized. As
+a special convenience of this solution, if the user doesn't have a
+portable S/Key calculator, e.g. on a pocket computer, then the user
+can carry a printed card with e.g. 100 pre-computed responses in their
+wallet and use that as an authentication token. To make it easier for
+the user to enter the hash, S/Key encodes it using a specially chosen
+dictionary of 4096 short simple words. This dictionary has been
+standardized by RFC 1751.
+
+4.1.4. Printed Crypto Hash for Signatures
+-----------------------------------------
+
+This was a protocol of my own invention, and illustrates the sort of
+simplicity that can win in particular settings. At a previous job, I
+was asked to recommend an encryption system to be used for passing
+authorized financial transactions. Specifically, the transactions were
+being passed in a hardcopy, which an authorized corporate officer
+signed; the recipient of the hardcopy recognized the signature, and so
+approved the transaction. The wish was to reproduce the trust and
+authorization model, while passing digital information on a floppy
+diskette, simply to eliminate the slow and error-prone data re-entry.
+What I proposed was a pair of standalone, secured workstations, in the
+two officers' offices. The sender inserted the diskette, reviewed the
+document on it, and printed a sticker containing the MD5 hash of that
+document, rendered using the RFC 1751 text representation. That
+sticker was attached to the diskette, then the sender wrote their
+signature on the sticker. The recipient could stick to the protocol
+they knew and approved of, recognizing the sender's physical
+signature, and could easily compare the printed checksum with one
+computed on their workstation.
+
+Certainly cryptographic systems can deliver better, harder-to-forge
+verification than a hand-written signature, but unless extraordinary
+care is taken in key management, the resulting systems can introduce
+new possibilities for fraud. This system had the advantage of
+precisely reproducing their accustomed authorization model, extending
+it to a digital document. It doesn't reduce risks over previous
+practice, but that was not a design goal. It does allow passing a
+machine-readable document with the precise same risks as previous
+practice, risks which were understood, accepted, and approved by the
+participants.
+
+4.2. Intermediate Protocols
+---------------------------
+
+These are protocols of medium complexity. They end up being real
+workhorses in secure systems design; they do substantial and useful
+jobs very well, and yet are fairly simple to deploy and use. At this
+level of complexity it becomes very very desireable not to redesign or
+reimplement cryptographic systems, but reuse existing well-analyzed
+packages. A review of the history of these packages will show why:
+even the best designs end up getting revised and refined, and every
+implementation gets bugs fixed, often in the neighborhood of the
+random number source.
+
+4.2.1. SSH
+----------
+
+Ssh, the Secure Shell, neatly replaces the Berkeley rsh, rlogin, and
+rcp family with functionally equivalent, very secure utilities. The
+essential and invarient feature of the ssh protocol is that it begins
+by negotiating a secure link between the two ends, before any
+authentication starts. There are a range of cyphers available. In
+version one of the protocol, the session key negotiation and public
+key authentication can only be done with RSA; version 2 of the
+protocol supports DSA for key exchange. Both versions offer optional
+compression. In addition to providing the functionality offered by
+rsh, rlogin, and rcp, ssh also supports port forwarding which can be a
+valuable building block, and has special support for transparently
+forwarding X11 connections including support for Xauthority.
+
+<URL:http://www.openssh.org/> contains links to many ssh
+implementations; these days I use OpenSSH, available from
+<URL:http://www.openssh.com/>, which implements both protocols,
+versions 1 and 2.
+
+4.2.2. PGP
+----------
+
+PGP is a workhorse tool for file encryption. It's specifically
+oriented to email encryption, and integration is available with many
+mail user agents, but PGP is very convenient as a general-purpose file
+encryption tool. It uses public key encryption with RSA, and in newer
+versions other public key algorithms including DSA and ElGamal; it
+supports symmetric encryption with IDEA, and in newer versions other
+algorithms including triple-DES, Blowfish, and CAST5. There are a few
+implementations available; these days I use GnuPG, available from
+<URL:http://www.gnupg.org/>. As a historical note, PGP was the first
+widespread use of the RSA public key algorithm.
+
+PGP is distinguished from other encryption systems in its support for
+Web Of Trust, an invention of PGP's original designer Philip
+Zimmermann. Web Of Trust is the most effective alternative so far
+invented to the more traditional Certification Authorities, for
+allowing people to get known-good public keys of strangers.
+
+4.3. Elaborate Protocols
+------------------------
+
+These are an even more extreme case where you want to stick to
+well-designed, well-respected protocols and implementations; these are
+quite complex and feature-rich. They also distinguish themselves by
+requiring rather more effort and complexity to set up and use. As in
+all engineering, complexity is the foe of reliability and correctness;
+when systems are more complex, there's more room for errors that can
+weaken or destroy the system. In the case of crypto protocols, this
+means you should be extra careful when setting up your first instance
+of a complex protocol, lest you inadvertently compromise your security
+through configuration error.
+
+4.3.1. Kerberos
+---------------
+
+Kerberos is the oldest crypto protocol of its complexity still in use.
+In fact, it is only now emerging from years of comparative obscurity.
+It was designed at MIT, as part of Project Athena. Kerberos provides a
+distributed authentication protocol. The security model it implements
+allows a trusted server to provide authentication services for trusted
+clients (typically running a bare minimum of software). Kerberos
+cannot protect against compromised clients, since the client system
+receives the user's secret (a password) and performs the
+authentication protocol on the user's behalf. The protocol is fairly
+complex, intended to avoid use of public-key algorithms, to provide
+robust authentication over an untrusted network, and to allow good
+efficiency.
+
+Kerberos is an interesting and distinctive protocol, because it was
+designed to use only one cryptographic algorithm, DES, and to use
+elaborate protocol fan-dancing to achieve the sorts of results that a
+modern design would achieve with an assymetric cypher. When Kerberos
+was designed, assymetric cyphers were quite new and little used, they
+were all restricted by patent, and they were all treated as
+non-exportable munitions by the US Federal Government.
+
+4.3.2. SSL and TLS
+------------------
+
+SSL is Secure Socket Layer; it provides a cryptographically secure
+transport, with an interface designed to resemble the socket
+abstraction for network connections. This allows it to be used for
+easily creating secure versions of many different protocols. It was
+originally designed for HTTP, by Netscape, but has since been widely
+used for POP and IMAP, and more recently for protecting SMTP. TLS, for
+Transport Layer Security, is the newer version of the protocol
+specified by RFC 2246.
+
+TLS can be deployed in two basically different ways, for any given
+protocol. It can be applied completely outside of and separate from
+the protocol it carries; this is how it is used with HTTP, to produce
+the hybrid protocol HTTPS, normally carried over port 443. For many
+applications in this style, the helper program stunnel, available from
+<URL:http://mike.daewoo.com.pl/computer/stunnel/>, can allow you to
+provide the SSL-secured varient of the service using an unmodified
+daemon.
+
+The alternative approach is architecturally preferable, but far more
+work to achieve, as it requires modifying the protocol specification
+to be secured, and modifying the clients and daemons that implement
+it; this approach introduces an option to explicitly negotiate turning
+on TLS protection in the middle of an established connection of the
+original protocol. The advantage of this approach is that, unlike the
+transparent tunnel approach described previously, this sort of
+protocol reengineering doesn't require assigning a separate port for
+the secured service.
+
+OpenSSL <URL:http://www.openssl.org/> is the reference implementation
+of SSL and TLS these days, eclipsing all others. TLS incorporates just
+about every cryptographic algorithm that anyone ever uses for
+anything; you name it, it's in there. Fortunately, IDEA is not
+required, and the RSA patent has been abandoned, so TLS has become
+useable in nearly all settings. SSL and TLS use certificates, which
+are public keys with attached digital signatures from Certificate
+Authorities. These are kept in various formats based on X.509, and are
+fairly messy. While TLS supports anonymous Diffie-Hellman key
+exchange, this is not widely implemented on clients, so certificates
+really aren't optional for practical deployments. Likewise, TLS
+supports DSA keys and certificates, but as they aren't nearly as
+widely supported on clients as RSA, they aren't generally practical
+for any but private applications.
+
+As a curiosity, there's an email encryption protocol, intended to try
+and compete with PGP, called S/MIME; as it uses X.509 certificates and
+signing authorities and all that, and of course any and every protocol
+it uses is included somewhere in the hodge-podge of TLS, the OpenSSL
+implementation also has support for doing S/MIME processing.
+
+4.3.3. IPSec
+------------
+
+Where SSL and TLS provide encryption up near the application level,
+implemented in daemons and clients, IPSec provides encryption below
+the application level, invisibly to application, in the networking
+part of the operating system. IPSec is pretty fiendishly complex,
+because the designers attempted to make it applicable for all
+network-level encryption. Today it's most widely used for creating
+Virtual Private Networks, VPNs; it is the only multi-vendor
+interoperable standard VPN protocol.
+
+5. Legal issues
+===============
+
+I only know about the situation in the US, so I'll speak on that a
+bit. If you're somewhere else, you should investigate whether the laws
+that apply to you are different.
+
+Within the US, the regulations restricting export (and hence, to a
+large degree, use) of open source strong encryption have just about
+fallen down.  There remains a claim that if you put strong encryption
+software up for open download over the internet, you should send an
+email somewhere to notify the federal government, but that only
+applies if you are the original author of that strong encryption
+software.
+
+The remaining barriers to use of open source strong encryption are
+patents; the two relevant ones are the RSA patent, which was abandoned
+Sep. 6 2000, and the patent on IDEA, I don't know when it goes, don't
+much care, as IDEA has been superceded by non-patented cyphers for all
+applications.
+
+A. Version and Date
+===================
+
+This is version 1.4 of this document, last modified 2000-11-30.
+
+B. Acknowledgements
+===================
+
+This paper begain as a relatively short article posted in response to
+a question on the VPN mailing list. Tina Bird
+<tbird@precision-guesswork.com> suggested expanding it into a
+standalone article.
+
+Seth Arnold <sarnold@willamette.edu> pointed out that I should mention
+the Birthday attack and its consequence on application of
+cryptographic hashes.
+
+Pierre Abbat <phma@oltronics.net> corrected an error I'd made,
+discrete logs over elliptic curves are working in groups, not fields.
+
+Caskey <caskey@TECHNOCAGE.COM> pointed out that you don't factor large
+primes, you factor composites of large primes. I made that usage
+blunder in the final reference to factoring, now fixed.
+
