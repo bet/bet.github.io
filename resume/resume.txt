@@ -17,13 +17,13 @@ Papers and Projects
 -------------------
 
 I've published a paper on auditing firewalls, available from
-<URL:http://bent.latency.net/firewall-audit-paper/p5.htm>. I've
+<URL:http://bet.github.io/firewall-audit-paper/p5.htm>. I've
 written and maintained several open source projects, including a
 high-performance POP-before-SMTP authentication daemon for use with
 Postfix, and a custom Linux distribution based on embedded Linux.
 
 I've written an overview of cryptography,
-<URL:http://bent.latency.net/crypto/index.html>
+<URL:http://bet.github.io/crypto/index.html>
 
 Experience
 ----------
