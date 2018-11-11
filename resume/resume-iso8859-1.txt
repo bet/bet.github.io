@@ -11,7 +11,7 @@ language well. I've studied perl 6 and rust. I've designed and
 negotiated security policies, built and maintained firewalls and IDS
 systems, and performed security administration. I support Red Hat
 Linux regularly, and work occasionally with Solaris. My focus is
-Unix system administration automation.
+Unix system administration automation and security.
 
 Papers and Projects
 -------------------
@@ -28,14 +28,17 @@ I've written an overview of cryptography,
 Experience
 ----------
 TD Securities                                            New York, NY
-2016-present
+2016-2018
 
-  I helped in adding DMARC, DKIM, and SPF records for email security. I helped
-  document and simplify our administration procedures for our multi-factor
-  authentication servers, and enable their use, via RADIUS, for a password
-  archive; and created operations documentation for upgrading them. I helped
-  evaluate Content Distribution Network (CDN) and Web Application firewall
-  (WAF) vendors.
+  I helped in adding DMARC, DKIM, and SPF records for email
+  security. I helped document and simplify our administration
+  procedures for our multi-factor authentication servers, and
+  enable their use, via RADIUS, for a password archive; and created
+  operations documentation for upgrading them. I helped evaluate
+  Content Distribution Network and Web Application firewall vendors.
+  I wrote and deployed programs to automatically transfer user
+  account lists, with roles, from two different vendor systems to an
+  in-house account re-authorization system.
 
 CNBC                                                     Englewood Cliffs, NJ
 2013-2014
