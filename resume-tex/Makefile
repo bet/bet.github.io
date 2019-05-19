@@ -1,13 +1,11 @@
-resume.dvi: resume.tex
-	latex resume.tex
+resume.pdf: resume.ps
+	ps2pdf resume.ps
 
 resume.ps: resume.dvi
 	dvips resume.dvi
 
-	pdftops resume.pdf
-
-resume.pdf: resume.tex
-	pdflatex resume.tex
+resume.dvi: resume.tex
+	latex resume.tex
 
 clean:
-	rm resume.aux resume.log
+	rm  -f resume.aux resume.log resume.dvi texput.log
